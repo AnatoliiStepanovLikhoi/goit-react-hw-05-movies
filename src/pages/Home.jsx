@@ -2,17 +2,19 @@ import { useState, useEffect } from 'react';
 
 import { getTrendings } from 'API/fetchMovies';
 import { Loader } from 'components/Loader/Loader';
+import { Container } from '../components/Common/Container.styled';
+import { MoviesList } from 'components/MoviesList/MoviesList';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [status, setStatus] = useState('pending');
+  const [status, setStatus] = useState('idle');
 
   useEffect(() => {
     setStatus('pending');
 
     getTrendings()
       .then(data => {
-        // console.log(data);
+        console.log(data);
         setMovies(data);
         setStatus('resolved');
       })
@@ -20,11 +22,12 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
       <h2>Trending today</h2>
       {status === 'pending' && <Loader />}
       {status === 'rejected' && <p>Error</p>}
-    </div>
+      {status === 'resolved' && <MoviesList moviesList={movies} />}
+    </Container>
   );
 };
 
