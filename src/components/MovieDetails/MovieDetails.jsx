@@ -1,10 +1,11 @@
-import { useParams, Outlet, Link } from 'react-router-dom';
+import { useParams, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getMovieById } from '../../API/fetchMovies';
 
 function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
+  const navigate = useNavigate();
   const { movieId } = useParams();
 
   //   console.log(movieId);
@@ -21,7 +22,9 @@ function MovieDetails() {
 
   return (
     <>
-      <button type="button">&#129092; Go back</button>
+      <button onClick={() => navigate('/')} type="button">
+        &#129092; Go back
+      </button>
       {movieDetails?.title && (
         <>
           <section>
