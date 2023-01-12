@@ -14,3 +14,15 @@ export async function getTrendings() {
     return error;
   }
 }
+
+export async function getMovieById(movieId) {
+  try {
+    const fetchData = await axios.get(`movie/${movieId}?api_key=${API_KEY}`);
+
+    // console.log(fetchData);
+
+    return fetchData.data;
+  } catch (error) {
+    return error;
+  }
+}

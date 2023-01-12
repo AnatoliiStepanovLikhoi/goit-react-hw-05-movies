@@ -14,7 +14,7 @@ const Home = () => {
 
     getTrendings()
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setMovies(data);
         setStatus('resolved');
       })
