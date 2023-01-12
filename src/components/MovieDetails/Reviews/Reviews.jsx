@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { getMovieReviews } from '../../../API/fetchMovies';
 import { useParams } from 'react-router-dom';
 
+import { ReviewsList, ReviewsItem, ReviewsTitle } from './Reviews.styled';
+
 export default function Reviews() {
   const { movieId } = useParams();
   const [reviews, setReview] = useState(null);
@@ -14,19 +16,19 @@ export default function Reviews() {
 
   console.log(reviews);
 
-  //   if (!review) {
-  //     return null;
-  //   }
+  if (!reviews) {
+    return null;
+  }
 
-  return reviews && reviews.length > 0 ? (
-    <ul>
+  return reviews.length > 0 ? (
+    <ReviewsList>
       {reviews.map(review => (
-        <li key={review.id}>
-          <h3>Author: {review.author}</h3>
+        <ReviewsItem key={review.id}>
+          <ReviewsTitle>Author: {review.author}</ReviewsTitle>
           <p>{review.content}</p>
-        </li>
+        </ReviewsItem>
       ))}
-    </ul>
+    </ReviewsList>
   ) : (
     <h3>Sorry, we don`t have any reviews for this movie</h3>
   );

@@ -1,14 +1,27 @@
-import { useParams, Outlet, Link, useNavigate } from 'react-router-dom';
+import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getMovieById } from '../../API/fetchMovies';
+
+import {
+  DetailsContainer,
+  DescSection,
+  GoBackButton,
+  MovieTitle,
+  DescContainer,
+  GenresList,
+  InfoLink,
+  InfoSection,
+  InfoList,
+  InfoTitle,
+} from './MovieDetails.styled';
 
 function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
   const navigate = useNavigate();
   const { movieId } = useParams();
 
-  //   console.log(movieId);
+  console.log(movieDetails);
 
   useEffect(() => {
     getMovieById(movieId).then(setMovieDetails);
@@ -18,50 +31,52 @@ function MovieDetails() {
 
   const findGenres = movieDetails.genres?.map(genre => genre.name);
 
-  //   console.log(findGenres);
+  // console.log(findGenres);
 
   return (
-    <>
-      <button onClick={() => navigate('/')} type="button">
+    <DetailsContainer>
+      <GoBackButton onClick={() => navigate('/')} type="button">
         &#129092; Go back
-      </button>
+      </GoBackButton>
       {movieDetails?.title && (
-        <>
-          <section>
+        <div>
+          <DescSection>
             <img
               src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
               alt={movieDetails.title}
             />
-            <div>
-              <h3>{movieDetails.title}:</h3>
+            <DescContainer>
+              <MovieTitle>
+                {movieDetails.title} ({movieDetails.release_date.slice(0, 4)})
+              </MovieTitle>
               <p>User Score: {userScores}%</p>
 
               <h3>Overview:</h3>
               <p>{movieDetails.overview}</p>
 
               <h3>Genres:</h3>
-              <ul>
+              <GenresList>
                 {findGenres.map(item => (
                   <li key={item}>{item}</li>
                 ))}
-              </ul>
-            </div>
-          </section>
-          <section>
-            <h2>Additional information</h2>
-            <ul>
+              </GenresList>
+            </DescContainer>
+          </DescSection>
+          <InfoSection>
+            <InfoTitle>Additional information</InfoTitle>
+            <InfoList>
               <li>
-                <Link to="cast">Cast</Link>
+                <InfoLink to="cast">Cast</InfoLink>
               </li>
               <li>
-                <Link to="reviews">Reviews</Link>
+                <InfoLink to="reviews">Reviews</InfoLink>
               </li>
-            </ul>
-          </section>
-        </>
+            </InfoList>
+          </InfoSection>
+        </div>
       )}
       <Outlet />
-    </>
+    </DetailsContainer>
   );
 }
 

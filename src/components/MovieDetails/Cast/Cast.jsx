@@ -4,6 +4,14 @@ import { useState } from 'react';
 import { getMovieCredits } from '../../../API/fetchMovies';
 import { useParams } from 'react-router-dom';
 
+import {
+  CastList,
+  CastImage,
+  CastItem,
+  CastInfo,
+  CastName,
+} from './Cast.styled';
+
 export default function Cast() {
   const { movieId } = useParams();
   const [cast, setCast] = useState(null);
@@ -20,22 +28,22 @@ export default function Cast() {
 
   return (
     // cast && (
-    <ul>
+    <CastList>
       {cast.map(item => (
-        <li key={item.id}>
-          <img
+        <CastItem key={item.id}>
+          <CastImage
             src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
             alt={item.name}
           />
-          <p>{item.name}</p>
+          <CastName>{item.name}</CastName>
 
-          <div>
+          <CastInfo>
             <p>Character:</p>
             <p>{item.character}</p>
-          </div>
-        </li>
+          </CastInfo>
+        </CastItem>
       ))}
-    </ul>
+    </CastList>
     // )
   );
 }
