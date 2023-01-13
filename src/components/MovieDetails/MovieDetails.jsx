@@ -1,5 +1,11 @@
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import {
+  useParams,
+  Outlet,
+  useNavigate,
+  useLocation,
+  Link,
+} from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
 
 import { getMovieById } from '../../API/fetchMovies';
 
@@ -18,10 +24,13 @@ import {
 
 function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { movieId } = useParams();
 
-  console.log(movieDetails);
+  const location = useLocation();
+
+  // const { state } = location.state;
+  console.log(location.state);
 
   useEffect(() => {
     getMovieById(movieId).then(setMovieDetails);
@@ -31,13 +40,27 @@ function MovieDetails() {
 
   const findGenres = movieDetails.genres?.map(genre => genre.name);
 
-  // console.log(findGenres);
+  const goBackRef = useRef(
+    `${location.state?.pathname}${
+      location.state?.pathname ? location.state?.search : ''
+    }`
+  );
+
+  // console.log(goBackRef);
 
   return (
     <DetailsContainer>
-      <GoBackButton onClick={() => navigate('/')} type="button">
+      {/* <GoBackButton
+        onClick={() => {
+          navigate(goBackRef.current ?? '/');
+        }}
+        type="button"
+      >
         &#129092; Go back
-      </GoBackButton>
+      </GoBackButton> */}
+
+      <Link to={goBackRef.current ?? '/'}>Go back</Link>
+
       {movieDetails?.title && (
         <div>
           <DescSection>

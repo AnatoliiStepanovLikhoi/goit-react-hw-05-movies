@@ -11,7 +11,7 @@ export const CastList = styled.ul`
 `;
 
 export const CastImage = styled.img`
-  width: 180px;
+  width: 100%;
   object-fit: cover;
   border-radius: 8px;
 `;

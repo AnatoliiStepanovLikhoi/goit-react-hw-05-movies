@@ -50,3 +50,15 @@ export async function getMovieReviews(movieId) {
     return error;
   }
 }
+
+export async function getMovieByName(searchQuery, searchPage) {
+  try {
+    const fetchData = await axios.get(
+      `search/movie?api_key=${API_KEY}&query=${searchQuery}&page=${searchPage}&include_adult=false`
+    );
+
+    return fetchData.data.results;
+  } catch (error) {
+    return error;
+  }
+}
