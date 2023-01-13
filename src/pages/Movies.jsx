@@ -14,10 +14,10 @@ export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [status, setStatus] = useState('idle');
 
-  useEffect(() => {
-    const acquiredSearchParam = searchParams.get('value');
+  const acquiredSearchParam = searchParams.get('value') ?? '';
 
-    console.log('render');
+  useEffect(() => {
+    // console.log('render');
 
     if (!acquiredSearchParam) {
       return setStatus('idle');
@@ -27,14 +27,12 @@ export default function Movies() {
       setMovies(data);
       setStatus('resolved');
     });
+  }, [acquiredSearchParam]);
 
-    // getMovieByName(inputRequest, 1).then(data => console.log(data));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // eslint-disable-line react-hooks/exhaustive-deps
 
   const onInputSubmit = event => {
     event.preventDefault();
-
-    const acquiredSearchParam = searchParams.get('value');
 
     // console.log(acquiredSearchParam);
     if (!acquiredSearchParam) {
@@ -68,7 +66,7 @@ export default function Movies() {
             type="text"
             name="findMovie"
             onChange={onInputUpdate}
-            // value={searchParams}
+            value={acquiredSearchParam}
           />
         </label>
         <button type="submit">Search</button>
