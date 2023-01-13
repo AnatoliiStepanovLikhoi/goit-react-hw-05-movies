@@ -17,6 +17,8 @@ export default function Movies() {
   useEffect(() => {
     const acquiredSearchParam = searchParams.get('value');
 
+    console.log('render');
+
     if (!acquiredSearchParam) {
       return setStatus('idle');
     }
@@ -27,7 +29,7 @@ export default function Movies() {
     });
 
     // getMovieByName(inputRequest, 1).then(data => console.log(data));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onInputSubmit = event => {
     event.preventDefault();
