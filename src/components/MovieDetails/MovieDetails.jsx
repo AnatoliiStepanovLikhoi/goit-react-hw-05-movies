@@ -3,7 +3,7 @@ import {
   Outlet,
   useNavigate,
   useLocation,
-  Link,
+  // Link,
 } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 
@@ -24,13 +24,13 @@ import {
 
 function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { movieId } = useParams();
 
   const location = useLocation();
 
   // const { state } = location.state;
-  console.log(location.state);
+  // console.log(location.state);
 
   useEffect(() => {
     getMovieById(movieId).then(setMovieDetails);
@@ -50,16 +50,16 @@ function MovieDetails() {
 
   return (
     <DetailsContainer>
-      {/* <GoBackButton
+      <GoBackButton
         onClick={() => {
           navigate(goBackRef.current ?? '/');
         }}
         type="button"
       >
         &#129092; Go back
-      </GoBackButton> */}
+      </GoBackButton>
 
-      <Link to={goBackRef.current ?? '/'}>Go back</Link>
+      {/* <Link to={goBackRef.current ?? '/'}>Go back</Link> */}
 
       {movieDetails?.title && (
         <div>
