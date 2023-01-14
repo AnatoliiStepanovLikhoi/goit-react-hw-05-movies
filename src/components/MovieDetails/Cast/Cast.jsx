@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { getMovieCredits } from '../../../API/fetchMovies';
 import { useParams } from 'react-router-dom';
 
+import posterPhoto from '../../../images/movie-poster-coming-soon.jpg';
+
 import {
   CastList,
   CastImage,
@@ -32,7 +34,11 @@ export default function Cast() {
       {cast.map(item => (
         <CastItem key={item.id}>
           <CastImage
-            src={`https://image.tmdb.org/t/p/w500/${item.profile_path}`}
+            src={
+              item.profile_path
+                ? `https://image.tmdb.org/t/p/w500/${item.profile_path}`
+                : posterPhoto
+            }
             alt={item.name}
           />
           <CastName>{item.name}</CastName>

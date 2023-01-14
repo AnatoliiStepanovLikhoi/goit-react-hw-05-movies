@@ -5,6 +5,7 @@ import {
   useLocation,
   // Link,
 } from 'react-router-dom';
+
 import {
   useEffect,
   useState,
@@ -16,7 +17,6 @@ import { getMovieById } from '../../API/fetchMovies';
 import {
   DetailsContainer,
   DescSection,
-  GoBackButton,
   MovieTitle,
   DescContainer,
   GenresList,
@@ -25,6 +25,10 @@ import {
   InfoList,
   InfoTitle,
 } from './MovieDetails.styled';
+
+import { Button } from 'components/Common/Button.styled';
+
+import posterPhoto from '../../images/movie-poster-coming-soon.jpg';
 
 function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
@@ -56,14 +60,14 @@ function MovieDetails() {
 
   return (
     <DetailsContainer>
-      <GoBackButton
+      <Button
         onClick={() => {
           navigate(goBackRef);
         }}
         type="button"
       >
         &#129092; Go back
-      </GoBackButton>
+      </Button>
 
       {/* <Link to={goBackRef}>Go back</Link> */}
 
@@ -71,7 +75,11 @@ function MovieDetails() {
         <div>
           <DescSection>
             <img
-              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+              src={
+                movieDetails.poster_path
+                  ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`
+                  : posterPhoto
+              }
               alt={movieDetails.title}
             />
             <DescContainer>

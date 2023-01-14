@@ -1,18 +1,23 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+
+import { MovieList, ListItem, NavlistLink } from './MovieList.styled';
+import { FcFilmReel } from 'react-icons/fc';
 
 export const MoviesList = ({ moviesList, state }) => (
-  <ul>
+  <MovieList>
     {moviesList.map(movieItem => (
-      <li key={movieItem.id}>
-        <Link to={`/movies/${movieItem.id}`} state={state}>
-          {movieItem.original_title}{' '}
-        </Link>
-      </li>
+      <ListItem key={movieItem.id}>
+        <FcFilmReel />
+        <NavlistLink to={`/movies/${movieItem.id}`} state={state}>
+          {movieItem.original_title}
+        </NavlistLink>
+      </ListItem>
     ))}
-  </ul>
+  </MovieList>
 );
 
 MoviesList.propType = {
   moviesList: PropTypes.array.isRequired,
+  // state: PropTypes.object.isRequired,
 };

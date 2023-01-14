@@ -6,26 +6,13 @@ export const DetailsContainer = styled.section`
   padding: 15px;
 `;
 
-export const GoBackButton = styled.button`
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid grey;
-
-  :hover,
-  :focus {
-    color: #ffffff;
-    background-color: #eb8596;
-    border: 1px solid #eb8596;
-  }
-`;
-
 export const DescSection = styled.section`
   display: grid;
   grid-template-columns: 400px 1fr;
   grid-template-rows: 1fr;
   grid-column-gap: 36px;
 
-  margin-bottom: 16px;
+  margin: 16px 0;
 `;
 
 export const InfoSection = styled.section`

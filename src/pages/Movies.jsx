@@ -1,46 +1,70 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
+// import { useDebounce } from '../components/Hooks/useDebounce';
+import { Notify } from 'notiflix';
 
 import { Container } from '../components/Common/Container.styled';
+import { Button } from 'components/Common/Button.styled';
+import { Input } from './Movies.styled';
 
 import { getMovieByName } from 'API/fetchMovies';
 import { MoviesList } from 'components/MoviesList/MoviesList';
 import { Loader } from 'components/Loader/Loader';
+import { Notification } from 'components/Common/Notification.styled';
+
+Notify.init({
+  distance: '20px',
+  cssAnimationStyle: 'from-top',
+  fontSize: '16px',
+  timeout: 1000,
+  backOverlay: true,
+  clickToClose: true,
+});
+
+// const DEBOUNCE_TIME_MS = 500;
 
 export default function Movies() {
-  // const [inputRequest, setInputRequest] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+
   const [movies, setMovies] = useState([]);
   const [status, setStatus] = useState('idle');
-  const [searchParams, setSearchParams] = useSearchParams({});
-  const acquiredSearchParam = searchParams.get('value') ?? '';
+
+  const [inputRequest, setInputRequest] = useState(
+    () => searchParams.get('value') ?? ''
+  );
+
+  // const acquiredSearchParam = searchParams.get('value') ?? '';
 
   useEffect(() => {
     // console.log('render');
 
-    if (!acquiredSearchParam) {
-      return setStatus('idle');
-    }
-
-    getMovieByName(acquiredSearchParam).then(data => {
-      setMovies(data);
-      setStatus('resolved');
-    });
-  }, [acquiredSearchParam]);
-
-  // eslint-disable-line react-hooks/exhaustive-deps
-
-  const onInputSubmit = event => {
-    event.preventDefault();
-
-    // console.log(acquiredSearchParam);
-    if (!acquiredSearchParam) {
-      return setStatus('idle');
+    if (inputRequest === '') {
+      return Notify.success('Please fill what you`re looking for!');
     }
 
     setStatus('pending');
 
-    getMovieByName(acquiredSearchParam)
+    getMovieByName(inputRequest)
+      .then(data => {
+        setMovies(data);
+        setStatus('resolved');
+      })
+      .catch(() => setStatus('rejected'));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onInputSubmit = event => {
+    event.preventDefault();
+
+    if (inputRequest === '') {
+      return Notify.success('Please fill what you`re looking for!');
+    }
+
+    setStatus('pending');
+
+    setSearchParams({ value: inputRequest });
+
+    getMovieByName(inputRequest)
       .then(data => {
         setMovies(data);
         setStatus('resolved');
@@ -49,29 +73,38 @@ export default function Movies() {
   };
 
   const onInputUpdate = ({ target }) => {
-    // setInputRequest(target.value);
-    // console.log(target.value);
+    setInputRequest(target.value.trim().toLowerCase());
 
-    let params = target.value.trim().toLowerCase();
-    // console.log(params);
-    setSearchParams(params ? { value: params } : {});
+    // console.log(target.value);
+    // let params = target.value.trim().toLowerCase();
+    // console.log('render');
+    // setSearchParams({ value: params });
   };
 
   return (
     <Container>
       <form onSubmit={onInputSubmit}>
         <label>
-          <input
+          <Input
             type="text"
             name="findMovie"
             onChange={onInputUpdate}
-            value={acquiredSearchParam}
+            value={inputRequest}
+            placeholder="Fill your request"
           />
         </label>
-        <button type="submit">Search</button>
+        <Button type="submit">Search</Button>
       </form>
 
+      {status === 'idle' && (
+        <Notification>Please fill what you`re looking for!</Notification>
+      )}
       {status === 'pending' && <Loader />}
+      {status === 'rejected' &&
+        Notify.failure('Sorry, something went wrong, please try again later!')}
+      {status === 'resolved' && movies.length === 0 && (
+        <Notification>Sorry, we found no movies</Notification>
+      )}
       {status === 'resolved' && (
         <MoviesList moviesList={movies} state={{ from: location }} />
       )}
