@@ -10,10 +10,9 @@ import { Loader } from 'components/Loader/Loader';
 export default function Movies() {
   // const [inputRequest, setInputRequest] = useState('');
   const location = useLocation();
-  let [searchParams, setSearchParams] = useSearchParams({});
   const [movies, setMovies] = useState([]);
   const [status, setStatus] = useState('idle');
-
+  const [searchParams, setSearchParams] = useSearchParams({});
   const acquiredSearchParam = searchParams.get('value') ?? '';
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function Movies() {
 
       {status === 'pending' && <Loader />}
       {status === 'resolved' && (
-        <MoviesList moviesList={movies} state={location} />
+        <MoviesList moviesList={movies} state={{ from: location }} />
       )}
     </Container>
   );

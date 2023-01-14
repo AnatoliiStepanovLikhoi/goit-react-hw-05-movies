@@ -5,7 +5,11 @@ import {
   useLocation,
   // Link,
 } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  // useRef
+} from 'react';
 
 import { getMovieById } from '../../API/fetchMovies';
 
@@ -30,7 +34,6 @@ function MovieDetails() {
   const location = useLocation();
 
   // const { state } = location.state;
-  // console.log(location.state);
 
   useEffect(() => {
     getMovieById(movieId).then(setMovieDetails);
@@ -40,26 +43,29 @@ function MovieDetails() {
 
   const findGenres = movieDetails.genres?.map(genre => genre.name);
 
-  const goBackRef = useRef(
-    `${location.state?.pathname}${
-      location.state?.pathname ? location.state?.search : ''
-    }`
-  );
+  // const goBackRef = useRef(
+  //   `${location.state?.from.pathname}${
+  //     location.state?.from.pathname ? location.state?.from.search : ''
+  //   }`
+  // );
 
-  // console.log(goBackRef);
+  const goBackRef = location.state?.from ?? '/';
+
+  // console.log(location.state.from);
+  // console.log(goBackRef.current);
 
   return (
     <DetailsContainer>
       <GoBackButton
         onClick={() => {
-          navigate(goBackRef.current ?? '/');
+          navigate(goBackRef);
         }}
         type="button"
       >
         &#129092; Go back
       </GoBackButton>
 
-      {/* <Link to={goBackRef.current ?? '/'}>Go back</Link> */}
+      {/* <Link to={goBackRef}>Go back</Link> */}
 
       {movieDetails?.title && (
         <div>

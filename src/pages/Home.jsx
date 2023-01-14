@@ -30,7 +30,7 @@ const Home = () => {
       {status === 'pending' && <Loader />}
       {status === 'rejected' && <p>Error</p>}
       {status === 'resolved' && (
-        <MoviesList moviesList={movies} state={location} />
+        <MoviesList moviesList={movies} state={{ from: location }} />
       )}
     </Container>
   );
